@@ -36,7 +36,7 @@ require("layout/head.php");
 
 
     <div class="p-4 mt-10 sm:ml-64">
-        <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
+        <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-10">
         <?php
           $userName = $user["firstName"] . " " . $user["lastName"]; /* ---> */
         
@@ -45,16 +45,34 @@ require("layout/head.php");
           <div>
             <div class="flex items-center justify-between">
               <p class="text-2xl">Room name: <?= $room_data["room_name"] ?></p>
-              <i class="ri-chat-settings-line text-3xl"></i>
+              <button type="button" class="ri-chat-settings-line text-3xl" aria-controls="dropdown-chat-setting" data-dropdown-toggle="dropdown-chat-setting"></button>
           </div>
-            
+		  <div id="dropdown-chat-setting" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
+			<ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+			<li>
+				<a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" data-modal-target="setting-modal" data-modal-toggle="setting-modal">Setting</a>
+			</li>
+
+			<li>
+				<a href="my_room.php" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"  onclick="delete_room(<?= $room["room_id"] ?>)">Leave</a>
+			</li>
+			</ul>
+		</div>
+
+
+		<!-- MODAL -->
+
+            <!-- SETTING MODAL -->
+			<?php require_once("layout/modals/setting_modal.php") ?>
+
+		<!-- END MODALS -->
             <p class="text-lg">room ID: <?= $room_id ?></p>
           </div>
 
 		  <?php if($isMember == true): ?>
           <!-- CHAT AREA -->
            
-          <div class="w-full h-200 bg-white border border-black overflow-y-auto p-5 flex flex-col gap-5 chat-discussion">
+          <div class="w-full h-120 bg-white border border-black overflow-y-auto p-5 flex flex-col gap-5 chat-discussion">
 
             <!-- CHAT RIGHT -->
 
@@ -132,180 +150,247 @@ require("layout/head.php");
 <script src="assets/js/plugins/pace/pace.min.js"></script>
 
 <script src="assets/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<!-- CHATS -->
 <script>
-var logChat = "";
+	var logChat = "";
 
-Array.prototype.diff = function(a) {
-	var me = this;
-	
-	for(let i = 0; i < me.length; i++){
-		for(let j = 0; j < a.length; j++){
-			if(a[j].id.indexOf(me[i].id) > -1){
-				a.splice(j, 1)
+	Array.prototype.diff = function(a) {
+		var me = this;
+		
+		for(let i = 0; i < me.length; i++){
+			for(let j = 0; j < a.length; j++){
+				if(a[j].id.indexOf(me[i].id) > -1){
+					a.splice(j, 1)
+				}
 			}
 		}
-	}
-	
-    return a;
-};
+		
+		return a;
+	};
 
-<?php if($isMember == true): ?>
-$(document).ready(function(){
-  var intercal = setInterval(function()
-  {
-    $.ajax({
-		url: 'ajax/message/fetch_message.php?room_id=<?= $room_id ?>',
-		dataType:  'json',
-		contentType: false,
-		cache: false,
-		processData:false,
-		success: function(r){
-			if(JSON.stringify(r) != logChat){
-				if(r.error != null){
-					if(r.error){
-						alert(r.message)
-						location.reload();
-						clearInterval(intercal);
+	<?php if($isMember == true): ?>
+	$(document).ready(function(){
+	var intercal = setInterval(function()
+	{
+		$.ajax({
+			url: 'ajax/message/fetch_message.php?room_id=<?= $room_id ?>',
+			dataType:  'json',
+			contentType: false,
+			cache: false,
+			processData:false,
+			success: function(r){
+				if(JSON.stringify(r) != logChat){
+					if(r.error != null){
+						if(r.error){
+							alert(r.message)
+							location.reload();
+							clearInterval(intercal);
+						}
 					}
+					
+					var chat_temp = "";
+					r.forEach(function(m){
+					if(m.owner){
+						//right messages
+						//   var temp = '<div class="chat-message right flex flex-row-reverse gap-2.5">' +
+						// 	'<img class="message-avatar w-8 h-8 rounded-full" src="${profilePicture}" alt="">' +
+						// 	'<div class="message">' +
+						// 		'<a class="message-author text-sm font-semibold text-gray-900 dark:text-white" href="#"> ${name} </a>' +
+						// 		'<span class="message-date text-sm font-normal text-gray-500 dark:text-gray-400"> ${time} </span>' +
+						// 		'<span class="message-content">' +
+						// 		'${message}' +
+						// 		'</span>' +
+						// 	'</div>' +
+						// '</div>';
+
+
+						var temp= '<div class="flex flex-row-reverse flex-start gap-2.5">' +
+							' <div class="flex flex-col gap-1 w-full  max-w-[320px]">' +
+							' <div class="flex flex-row-reverse items-center gap-2.5">' +
+							
+							' <a class="message-author text-base font-semibold text-gray-900 mr-12" href="#">${name}</a>' +
+							
+							' </div>' +
+							'  <div class="flex flex-row-reverse items-end gap-2.5">' +
+								' <img class="w-8 h-8 rounded-full" src="${profilePicture}" alt="">' +
+								' <div class="flex flex-col leading-1.5 p-2 gap-4 border-gray-200 bg-gray-100 rounded-xl dark:bg-gray-700 min-h-auto max-h-40">' +
+									' <span class="text-sm font-normal text-gray-900 dark:text-white message-content"> ${message}</span>' +
+									' <span class= "message-date text-sm font-normal text-gray-500  text-right">${time}</span>' +
+								' </div>' +
+							' </div>' +
+						' </div>' +
+					' </div>' ;
+
+						
+						chat_temp += temp.replace("${profilePicture}", m.profilePicture).replace("${name}", m.sender).replace("${message}", m.message).replace("${time}", m.time_ago)
+					} else {
+						//left messages
+						//   var temp = '<div class="chat-message left">' +
+						// 	'<img class="message-avatar" src="${profilePicture}" alt="">' +
+						// 	'<div class="message">' +
+						// 		'<a class="message-author" href="#"> ${name} </a>' +
+						// 		'<span class="message-date"> ${time} </span>' +
+						// 		'<span class="message-content">' +
+						// 		'${message}' +
+						// 		'</span>' +
+						// 	'</div>' +
+						// '</div>';
+						
+						var temp= '<div class="flex flex-row flex-start gap-2.5">' +
+							' <div class="flex flex-col gap-1 w-full  max-w-[320px]">' +
+							' <div class="flex flex-row items-center gap-2.5">' +
+							
+							' <a class="message-author text-base font-semibold text-gray-900 ml-12" href="#">${name}</a>' +
+							
+							' </div>' +
+							'  <div class="flex flex-ro items-end gap-2.5">' +
+								' <img class="w-8 h-8 rounded-full" src="${profilePicture}" alt="">' +
+								' <div class="flex flex-col leading-1.5 p-2 gap-4 border-gray-200 bg-gray-100 rounded-xl dark:bg-gray-700 min-h-auto max-h-40">' +
+									' <span class="text-sm font-normal text-gray-900 dark:text-white message-content"> ${message}</span>' +
+									' <span class= "message-date text-sm font-normal text-gray-500  text-right">${time}</span>' +
+								' </div>' +
+							' </div>' +
+						' </div>' +
+					' </div>' ;
+
+
+						chat_temp += temp.replace("${profilePicture}", m.profilePicture).replace("${name}", m.sender).replace("${message}", m.message).replace("${time}", m.time_ago)
+					}
+					});
+					
+					$('.chat-discussion').html(chat_temp)
+					var d = $('.chat-discussion');
+					d.scrollTop(d.prop("scrollHeight"));
 				}
 				
-				var chat_temp = "";
-				r.forEach(function(m){
-				  if(m.owner){
-					  //right messages
-					//   var temp = '<div class="chat-message right flex flex-row-reverse gap-2.5">' +
-					// 	'<img class="message-avatar w-8 h-8 rounded-full" src="${profilePicture}" alt="">' +
-					// 	'<div class="message">' +
-					// 		'<a class="message-author text-sm font-semibold text-gray-900 dark:text-white" href="#"> ${name} </a>' +
-					// 		'<span class="message-date text-sm font-normal text-gray-500 dark:text-gray-400"> ${time} </span>' +
-					// 		'<span class="message-content">' +
-					// 		'${message}' +
-					// 		'</span>' +
-					// 	'</div>' +
-					// '</div>';
-
-
-					var temp= '<div class="flex flex-row-reverse flex-start gap-2.5">' +
-						' <div class="flex flex-col gap-1 w-full  max-w-[320px]">' +
-						' <div class="flex flex-row-reverse items-center gap-2.5">' +
-						' <img class="w-12 h-12 rounded-full" src="${profilePicture}" alt="">' +
-						' <a class="message-author text-lg font-semibold text-gray-900" href="#">${name}</a>' +
-						
-						' </div>' +
-                           '  <div class="flex flex-row-reverse items-end gap-2.5">' +
-                                
-                            ' <div class="flex flex-col leading-1.5 p-2 gap-4 border-gray-200 bg-gray-100 rounded-xl dark:bg-gray-700 min-h-auto max-h-40">' +
-                                ' <span class="text-sm font-normal text-gray-900 dark:text-white message-content"> ${message}</span>' +
-								' <span class= "message-date text-sm font-normal text-gray-500  text-right">${time}</span>' +
-                            ' </div>' +
-                        ' </div>' +
-					' </div>' +
-				' </div>' ;
-
-					  
-					  chat_temp += temp.replace("${profilePicture}", m.profilePicture).replace("${name}", m.sender).replace("${message}", m.message).replace("${time}", m.time_ago)
-				  } else {
-					  //left messages
-					//   var temp = '<div class="chat-message left">' +
-					// 	'<img class="message-avatar" src="${profilePicture}" alt="">' +
-					// 	'<div class="message">' +
-					// 		'<a class="message-author" href="#"> ${name} </a>' +
-					// 		'<span class="message-date"> ${time} </span>' +
-					// 		'<span class="message-content">' +
-					// 		'${message}' +
-					// 		'</span>' +
-					// 	'</div>' +
-					// '</div>';
-					  
-					var temp= '<div class="flex flex-row flex-start gap-2.5">' +
-						' <div class="flex flex-col gap-1 w-full  max-w-[320px]">' +
-						' <div class="flex flex-row items-center gap-2.5">' +
-						' <a class="message-author text-lg font-semibold text-gray-900" href="#">${name}</a>' +
-						' <span class= "message-date text-sm font-normal text-gray-500 ">${time}</span>' +
-						' </div>' +
-                           '  <div class="flex flex-row items-start gap-2.5">' +
-                                ' <img class="w-8 h-8 rounded-full" src="${profilePicture}" alt="">' +
-                            ' <div class="flex flex-col leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700 min-h-auto max-h-40">' +
-                                ' <span class="text-sm font-normal text-gray-900 dark:text-white message-content"> ${message}</span>' +
-                            ' </div>' +
-                        ' </div>' +
-					' </div>' +
-				' </div>' ;
-					  chat_temp += temp.replace("${profilePicture}", m.profilePicture).replace("${name}", m.sender).replace("${message}", m.message).replace("${time}", m.time_ago)
-				  }
-				});
-				
-				$('.chat-discussion').html(chat_temp)
-				var d = $('.chat-discussion');
-				d.scrollTop(d.prop("scrollHeight"));
+				logChat = JSON.stringify(r); 
 			}
-			
-			logChat = JSON.stringify(r); 
+		});
+
+	},1000);
+	});
+
+	$('#txt-message').keypress(function(event){
+		var keycode = (event.keyCode ? event.keyCode : event.which);
+		if(keycode == '13'){
+			$("#send-message").submit()
 		}
-    });
+	});
+	<?php endif; ?>
 
-  },1000);
-});
-
-$('#txt-message').keypress(function(event){
-    var keycode = (event.keyCode ? event.keyCode : event.which);
-    if(keycode == '13'){
-        $("#send-message").submit()
-    }
-});
-<?php endif; ?>
-
-$("#request_join").on('click',(function(e) {
-	$.ajax({
-		url: "ajax/request/join_room.php",
-		type: "POST",
-		data: {
-			room_id: "<?= $room_id ?>"
-		},
-		dataType:  'json',
-		beforeSend: function () {
-			$('#request_join').text("Requesting...").prop('disabled', true)
-		},
-		success: function(r) {
-			if(r.success){
-				$('#request_join').text("Pending approve...").prop('disabled', true)
-			} else {
+	$("#request_join").on('click',(function(e) {
+		$.ajax({
+			url: "ajax/request/join_room.php",
+			type: "POST",
+			data: {
+				room_id: "<?= $room_id ?>"
+			},
+			dataType:  'json',
+			beforeSend: function () {
+				$('#request_join').text("Requesting...").prop('disabled', true)
+			},
+			success: function(r) {
+				if(r.success){
+					$('#request_join').text("Pending approve...").prop('disabled', true)
+				} else {
+					$('#request_join').text("Request join").prop('disabled', false)
+				}
+			},
+			error: function(){
 				$('#request_join').text("Request join").prop('disabled', false)
+			},
+			complete: function(){
+				
 			}
-		},
-		error: function(){
-			$('#request_join').text("Request join").prop('disabled', false)
-		},
-		complete: function(){
-			
-		}
-   });
-}));
+	});
+	}));
 
-$("#send-message").on('submit',(function(e) {
-	e.preventDefault();
-	$.ajax({
-		url: "ajax/message/send.php?room_id=<?= $room_id ?>",
-		type: "POST",
-		data:  new FormData(this),
-		dataType:  'json',
-		contentType: false,
-		cache: false,
-		processData:false,
-		beforeSend: function () {
-			$('#txt-message').prop('disabled', true)
-		},
-		success: function(data) {
-			
-		},
-		error: function(){
-			//... error event
-		},
-		complete: function(){
-			$('#txt-message').prop('disabled', false).focus().val(null)
-		}
-   });
-}));
+	$("#send-message").on('submit',(function(e) {
+		e.preventDefault();
+		$.ajax({
+			url: "ajax/message/send.php?room_id=<?= $room_id ?>",
+			type: "POST",
+			data:  new FormData(this),
+			dataType:  'json',
+			contentType: false,
+			cache: false,
+			processData:false,
+			beforeSend: function () {
+				$('#txt-message').prop('disabled', true)
+			},
+			success: function(data) {
+				
+			},
+			error: function(){
+				//... error event
+			},
+			complete: function(){
+				$('#txt-message').prop('disabled', false).focus().val(null)
+			}
+	});
+	}));
+</script>
+
+
+<!-- REQUEST MANAGEMENT -->
+<script>
+	function approve_request(user_id, room_id){
+		$.ajax({
+			url: "ajax/request/request_action.php?do=approve",
+			type: "POST",
+			data: {
+				user_id: user_id,
+				room_id: room_id
+			},
+			dataType:  'json',
+			beforeSend: function () {
+				
+			},
+			success: function(r) {
+				if(r.success){
+					$("#request-user-" + user_id).remove()
+					toastr.success(r.message)
+				} else {
+					toastr.error(r.message)
+				}
+			},
+			error: function(){
+				toastr.error("Unkown error?!")
+			},
+			complete: function(){
+				
+			}
+	});
+	}
+
+	function reject_request(user_id, room_id){
+		$.ajax({
+			url: "ajax/request/request_action.php?do=reject",
+			type: "POST",
+			data: {
+				user_id: user_id,
+				room_id: room_id
+			},
+			dataType:  'json',
+			beforeSend: function () {
+				
+			},
+			success: function(r) {
+				if(r.success){
+					$("#request-user-" + user_id).remove()
+					toastr.success(r.message)
+				} else {
+					toastr.error(r.message)
+				}
+			},
+			error: function(){
+				toastr.error("Unkown error?!")
+			},
+			complete: function(){
+				
+			}
+	});
+	}
 </script>
 </body>
 </html>
