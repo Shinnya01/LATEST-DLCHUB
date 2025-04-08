@@ -113,7 +113,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `firstName`, `lastName`, `profilePicture`, `username`, `password`, `session`, `admin`, `verified`, `joinned_time`) VALUES
-(1, 'Vy', 'Nghia ', 'https://nghia.org/project/chat/assets/img/default.jpg', 'vynghia', '1151985611', '36abd83f011d92b06c801c99f1884c6c', 1, 0, '2019-07-05 20:52:10');
+(1, 'user1', 'user1 ', 'https://nghia.org/project/chat/assets/img/default.jpg', 'admin1', 'admin1', '36abd83f011d92b06c801c99f1884c6c', 1, 0, '2025-08-04 20:52:10');
 
 --
 -- Indexes for dumped tables
