@@ -27,8 +27,7 @@ if (strpos($_SERVER["SCRIPT_URI"], $filename) !== false) {
     <!-- ICON / REMIXICON LINK -->
     <link
     href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
-    rel="stylesheet"
-/>  
+    rel="stylesheet"/>  
 
 
 
@@ -43,12 +42,6 @@ if (strpos($_SERVER["SCRIPT_URI"], $filename) !== false) {
 
     <link href="assets/css/animate.css" rel="stylesheet">
     
-
-    <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
-    <link
-    href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
-    rel="stylesheet"
-    />
 
 
 </head>

@@ -19,9 +19,11 @@
 							
 				
 										<ul class="w-[40%] bg-red-100">
+										<?php if($isOwner): ?>
 											<li>
 												<a href="#member_request">Member Request</a>
 											</li>
+											<?php endif; ?>
 											<li>
 												<a href="#room_option">Room Option</a>
 											</li>
@@ -32,6 +34,7 @@
 						
 							<div class="w-full h-120 overflow-y-hidden">
 								<!-- ROOM REQUEST MANAGEMENT -->
+								 <?php if($isOwner): ?>
 								<section class="bg-green-100 h-120" id="member_request">
 												<?php
 														$query = mysqli_query($db, "select * from request_join where room_id={$room_data["room_id"]}") or error("Can't get request join", $_HOME_FILE);
@@ -60,6 +63,9 @@
 											if(mysqli_num_rows($query) < 1){
 												echo "No requests need approval!";
 											}
+
+
+										endif;
 											?>
 
 								</section>		
@@ -99,70 +105,52 @@
                                 
                                             <?php
 
-                                             $query = mysqli_query($db, "select cr.*, u.* from chat_room cr JOIN user u ON cr.owner = u.user_id WHERE cr.room_id = $room_id") or error("Can't get room data", $_HOME_FILE);
-                                                while($mem = mysqli_fetch_array($query)):
-                                                    
-                                            ?>
-                                            <p>Room Owner: <?= $mem["owner"] ?></p>
-                                            <p>Room Members:</p>
-                                            <?php
+											$get_room_owner = mysqli_query($db, "select * from chat_room where  room_id={$room_id}");
+											while($owner = mysqli_fetch_array($get_room_owner)):
 
-                                              
-                                            
-                                                // $get_all_mem = mysqli_query($db, "select * from room_member where room_id ={$mem["room_id"]}");
-                                                // while($members = mysqli_fetch_array($get_all_mem)):
+												
 
-                                                
-                                                
-
-                                                // $room_query = mysqli_query($db, "select * from chat_room where room_id = {$mem["room_id"]}") or error("Can't get room data", $_HOME_FILE);
-                                                // $room = mysqli_fetch_array($room_query);
-                                            ?>
-
-
-                                            <p> <?= $members["user_id"] ?></p>
-
-
-
-                                            <?php
-                                    // endwhile;
-                                        endwhile; 
-                                        ?>
-
-<?php
-
-// Fetch the chat room details along with the owner's information
-// $query = mysqli_query($db, "
-//     SELECT cr.*, u.firstName, u.lastName 
-//     FROM chat_room cr
-//     JOIN user u ON cr.owner = u.id 
-//     WHERE cr.room_id = $room_id
-// ") or error("Can't get room data", $_HOME_FILE);
-
-// // Check if the room exists
-// if ($mem = mysqli_fetch_array($query)) {
-//     $fullName = $mem["firstName"] . ' ' . $mem["lastName"];
-//     ?>
-<!-- //     <p>Room Owner:<?= $fullName ?></p>
-//     <p>Room Members:</p> -->
-   <?php
-
-//     // Fetch all members of the room
-//     $get_all_mem = mysqli_query($db, "SELECT * FROM room_member WHERE room_id = {$mem["room_id"]}");
-//     while ($members = mysqli_fetch_array($get_all_mem)) {
-//         // Fetch user details for each member
-//         $user_query = mysqli_query($db, "SELECT * FROM user WHERE id = {$members["user_id"]}") or error("Can't get user data", $_HOME_FILE);
-//         if ($user = mysqli_fetch_array($user_query)) {
-//             $memberFullName = $user["firstName"] . ' ' . $user["lastName"];
-//             ?>
-//             <p><?= $memberFullName ?></p>
-//             <?php
-//         }
-//     }
-// } else {
-//     echo "<p>No room found.</p>";
-// }
+												$get_name_owner = mysqli_query($db, "select * from user where id = {$owner["owner"]}");
+													$owner_name = mysqli_fetch_array($get_name_owner);
 ?>
+<p>Room Owner: <?= $owner_name["firstName"] ?></p>
+<p>Room Members:</p>
+<?php
+endwhile; 
+
+					$get_room_mem = mysqli_query($db, "select * from room_member where room_id={$room_id} ORDER BY user_id ASC");
+																while($get_mem = mysqli_fetch_array($get_room_mem)):
+
+
+										$get_name_member = mysqli_query($db, "select * from user where id = {$get_mem["user_id"]} ");
+											$member_name = mysqli_fetch_array($get_name_member);
+												
+
+											
+                                            ?>
+                                            
+									
+
+
+                                            <p><?= $member_name["firstName"] ?></p>
+                                            <?php
+   												endwhile;
+
+
+												
+                                            
+                                           
+                                            ?>
+
+
+
+
+
+
+                                         
+
+
+
 
                                 </section>
 								</div>

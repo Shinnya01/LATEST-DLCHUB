@@ -6,13 +6,23 @@ error_reporting(0);
 
 $registerStatus = array();
 if(checkUserSession($db) !== True){
-	if(!empty($_POST["username"]) && !empty($_POST["password"]) && !empty($_POST["re_password"])){
+	if(!empty($_POST["email"]) && !empty($_POST["password"]) && !empty($_POST["re_password"])){
 		$firstName 		= (string)$_POST["firstName"];
 		$lastName 		= (string)$_POST["lastName"];
 		
-		$username 		= (string)$_POST["username"];
+
 		$password 		= (string)$_POST["password"];
 		$re_password 	= (string)$_POST["re_password"];
+		$email = (string)$_POST["email"]; //new
+		$program = (string)$_POST["program"]; //new
+
+		list($username, $domain) = explode('@',$email);
+
+		
+			
+		
+
+
 		
 		$firstName = preg_replace('/\s+/', ' ', $firstName);
 		$lastName = preg_replace('/\s+/', ' ', $lastName);
@@ -21,12 +31,16 @@ if(checkUserSession($db) !== True){
 		
 		$blackList = ["admin", "administrator", "gm", "fuck", "nigga", "faggot"];
 		
+
+
 		if(strlen($password) >= 6){
 			if(0 < count(array_intersect(array_map('strtolower', explode(' ', $username)), $blackList)) || 
 			   0 < count(array_intersect(array_map('strtolower', explode(' ', $firstName)), $blackList)) || 
 			   0 < count(array_intersect(array_map('strtolower', explode(' ', $lastName)), $blackList))){
 					$registerStatus = array("success" => false, "message" => "Your name or username contains the banned word(s)");	
 				} else {
+					
+				if (preg_match('/^[0-9]+$/', $username)){	
 					if (!preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $username))
 					{
 						if(strpos($username, " ") === False){
@@ -37,7 +51,7 @@ if(checkUserSession($db) !== True){
 									$userSession = md5($username.$password.(time() / 2));
 									$dateTime = date("Y-m-d H:i:s");
 									
-									mysqli_query($db, "INSERT INTO user(id, firstName, lastName, profilePicture, username, password, session, admin,verified,joinned_time) VALUES (NULL, '$firstName', '$lastName ', '$profilePicture', '$username', '$password', '$userSession', 0, 0, '$dateTime')");
+									mysqli_query($db, "INSERT INTO user(id, firstName, lastName, profilePicture, username, password,program,user_email, session, admin,verified,joinned_time) VALUES (NULL, '$firstName', '$lastName ', '$profilePicture', '$username', '$password','$program', '$email', '$userSession', 0, 0, '$dateTime')");
 									
 									$cookie_name = "user_name";
 									$cookie_value = $username;
@@ -61,6 +75,9 @@ if(checkUserSession($db) !== True){
 					} else {
 						$registerStatus = array("success" => false, "message" => "Username doesn't accept special characters");
 					}
+				}else{
+					$registerStatus = array("success" => false, "message" => "email doesn't accept letter");
+				}
 				}
 			} else {
 			$registerStatus = array("success" => false, "message" => "Password must be 6 characters or more!");

@@ -56,6 +56,12 @@ if (strpos($_SERVER["SCRIPT_URI"], $filename) !== false) {
              </a>
           </li>
           <li>
+             <a href="<?= $_ACCOUNT_INFO_FILE ?>" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+               <i class="ri-t-shirt-2-line"></i>
+                <span class="flex-1 ms-3 whitespace-nowrap">Account</span>
+             </a>
+          </li>
+          <li>
             <button type="button" class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="dropdown-admin-area" data-collapse-toggle="dropdown-admin-area">
             <i class="ri-chat-4-line"></i>
                   <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Admin Area</span>
@@ -63,12 +69,12 @@ if (strpos($_SERVER["SCRIPT_URI"], $filename) !== false) {
                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
                   </svg>
             </button>
-            <ul id="dropdown-admin-area" class=" py-2 space-y-2">
+            <ul id="dropdown-admin-area" class="py-2 space-y-2">
                   <li>
-                     <a href="admin_page.php" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"><i class="ri-team-fill mr-4"></i> Room Control</a>
+                     <a href="room_control.php" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"><i class="ri-team-fill mr-4"></i> Room Control</a>
                   </li>
                   <li>
-                     <a href="#user_control" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"><i class="ri-shake-hands-line mr-4"></i> User Control</a>
+                     <a href="user_control.php" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"><i class="ri-shake-hands-line mr-4"></i> User Control</a>
                   </li>
          
             </ul>

@@ -55,7 +55,7 @@ function searchUser_bId($db, $userid){
  **/
 function searchUser_bSession($db, $session){
 	if(!empty($session) && !mysqli_error($db)){
-		$sql = mysqli_query($db, "select id,username,password,firstName,lastName,user_email,profilePicture,admin from user where session = '$session'");
+		$sql = mysqli_query($db, "select * from user where session = '$session'");
 		if(mysqli_num_rows($sql) > 0){
 			$result = mysqli_fetch_array($sql);
 			

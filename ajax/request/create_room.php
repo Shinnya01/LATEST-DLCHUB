@@ -30,7 +30,7 @@ if(checkUserSession($db) !== FALSE){
 				if($insert_query){
 					$createStatus = array(
 						"success" => true,
-						"message" => "Room created. Back to My room to see it"
+						"message" => "Room created."
 					);
 				} else {
 					$createStatus = array(

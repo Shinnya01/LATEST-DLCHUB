@@ -76,7 +76,7 @@ require("layout/head.php");
 
             <!-- CHAT RIGHT -->
 
-            
+		
 
           </div>
           <form id="send-message">

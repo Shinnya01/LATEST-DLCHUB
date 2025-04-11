@@ -21,7 +21,7 @@ if(checkUserSession($db) !== False){
 			} else {
 				mysqli_query($db, "UPDATE user SET firstName = '$firstName', lastName = '$lastName' WHERE username = '{$user["username"]}'") or die(json_encode(array("success" => false, "message" => "Error update sql query")));
 				
-				$changeStatus = array("success" => true, "message" => "Name has changed, please reload page to see new change.");
+				$changeStatus = array("success" => true, "message" => "Name has changed, the page will refresh in 3 seconds.");
 			}
 		} else {
 			$changeStatus = array("success" => false, "message" => "First name and last name must be 15 characters or less.");

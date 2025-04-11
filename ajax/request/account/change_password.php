@@ -19,7 +19,7 @@ if(checkUserSession($db) !== False){
 			
 				mysqli_query($db, "UPDATE user SET session = '$userSession', password = '$new_password' WHERE username = '{$user["username"]}'") or die(json_encode(array("success" => false, "message" => "Error update sql query")));
 				
-				$changeStatus = array("success" => true, "message" => "Change password success, you will login again after this!");
+				$changeStatus = array("success" => true, "message" => "Change password success, the page will refresh in 3 seconds");
 			} else {
 				$changeStatus = array("success" => false, "message" => "New password must be 6 characters or more!");
 			}

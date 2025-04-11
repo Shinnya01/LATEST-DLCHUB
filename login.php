@@ -28,11 +28,11 @@ if(checkUserSession($db) !== False){
         <form class="max-w-sm mx-auto w-full" method="post" action="" id="Login">
                 <div class="mb-5">
                     <label for="username" class="block mb-2 text-sm font-medium text-gray-100">Your email</label>
-                    <input type="text" id="username" value="asjhvafujsy@gmail.com" name="username" class="shadow-xs bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="name@flowbite.com" required />
+                    <input type="text" id="username" value="asjhvafujsy@gmail.com" name="username" class="shadow-xs bg-gray-50 border border-gray-300 text-black text-sm rounded-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="name@flowbite.com" required />
                 </div>
                 <div class="mb-5">
                     <label for="password" class="block mb-2 text-sm font-medium text-gray-100">Your password</label>
-                    <input type="password" id="password" value="aksfbais" name="password" class="shadow-xs bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+                    <input type="password" id="password" value="aksfbais" name="password" class="shadow-xs bg-gray-50 border border-gray-300 text-black text-sm rounded-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
                 </div>
                 
                 <div class="flex items-center mb-6 justify-between ">
@@ -46,11 +46,11 @@ if(checkUserSession($db) !== False){
                         </div>
                 </div>
 
-                <button id="lgbtn" type="submit" name="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-full">Log in</button>
+                <button id="lgbtn" type="submit" name="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center w-full">Log in</button>
 
 
                 <p class="text-lg font-light text-gray-100 text-center mt-5">
-                        Don’t have an account yet? <a href="signup.html" class="font-medium text-blue-600 hover:underline">Sign up</a>
+                        Don’t have an account yet? <a href="register.php" class="font-medium text-blue-600 hover:underline">Sign up</a>
                 </p>
             </form>
 

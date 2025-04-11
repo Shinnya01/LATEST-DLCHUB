@@ -50,14 +50,24 @@ $userEmail = $user["user_email"];
                 </div>
                 <ul class="py-1" role="none">
                   <li>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Profile</a>
+                  <a
+                    data-modal-target="show-user-profile" data-modal-toggle="show-user-profile"
+                    
+                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">Edit Profile
+                      </a>
+                  
                   </li>
+                  
                   <li>
                     <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Settings</a>
                   </li>
       
                   <li>
                     <a href="logout.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Sign out</a>
+                  </li>
+
+                  <li>
+                    
                   </li>
                 </ul>
               </div>
@@ -66,3 +76,106 @@ $userEmail = $user["user_email"];
       </div>
     </div>
   </nav>
+
+  <?php require_once("modals/user_profile.php") ?>
+
+
+    <script>
+      $("#change_picture").on('submit',(function(e) {
+      e.preventDefault();
+      $.ajax({
+        url: "ajax/request/account/change_picture.php",
+        type: "POST",
+        data:  new FormData(this),
+        dataType:  'json',
+        contentType: false,
+        cache: false,
+        processData:false,
+        beforeSend: function () {
+          $('#cppbtn').text('Processing...').prop('disabled', true)
+        },
+        success: function(r) {
+          if(r.success){
+            toastr.success(r.message)
+          } else {
+            toastr.error(r.message)
+          }
+        },
+        error: function(){
+          
+          
+        },
+        complete: function(){
+          $('#cppbtn').text('Change').prop('disabled', false)
+        }
+      });
+      }));
+
+      $("#change_password").on('submit',(function(e) {
+        e.preventDefault();
+        $.ajax({
+          url: "ajax/request/account/change_password.php",
+          type: "POST",
+          data:  new FormData(this),
+          dataType:  'json',
+          contentType: false,
+          cache: false,
+          processData:false,
+          beforeSend: function () {
+            $('#cgpbtn').text('Processing...').prop('disabled', true)
+          },
+          success: function(r) {
+            if(r.success){
+              toastr.success(r.message)
+              setTimeout(function() {
+                            location.reload();
+                        }, 3000);
+          
+            } else {
+              toastr.error(r.message)
+            }
+          },
+          error: function(){
+            
+            
+          },
+          complete: function(){
+            $('#cgpbtn').text('Change').prop('disabled', false)
+          }
+      });
+      }));
+
+      $("#change_name").on('submit',(function(e) {
+        e.preventDefault();
+        $.ajax({
+          url: "ajax/request/account/change_name.php",
+          type: "POST",
+          data:  new FormData(this),
+          dataType:  'json',
+          contentType: false,
+          cache: false,
+          processData:false,
+          beforeSend: function () {
+            $('#cgnbtn').text('Processing...').prop('disabled', true)
+          },
+          success: function(r) {
+            if(r.success){
+              toastr.success(r.message)
+              
+              setTimeout(function() {
+                            location.reload();
+                        }, 3000);
+            } else {
+              toastr.error(r.message)
+            }
+          },
+          error: function(){
+            
+            
+          },
+          complete: function(){
+            $('#cgnbtn').text('Change').prop('disabled', false)
+          }
+      });
+      }));
+  </script>

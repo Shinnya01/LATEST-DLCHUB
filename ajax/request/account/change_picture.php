@@ -15,7 +15,7 @@ if(checkUserSession($db) !== False){
 		if(!empty(getimagesize($picture))){
 			mysqli_query($db, "UPDATE user SET profilePicture = '$picture' WHERE username = '{$user["username"]}'") or die(json_encode(array("success" => false, "message" => "Error update sql query")));
 			
-			$changeStatus = array("success" => true, "message" => "Change password success, you will login again after this!");
+			$changeStatus = array("success" => true, "message" => "Change image success, you will login again after this!");
 		} else {
 			$changeStatus = array("success" => false, "message" => "Invaild Image/Picture URL!");
 		}
