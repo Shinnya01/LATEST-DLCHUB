@@ -36,10 +36,11 @@ require("layout/head.php");
                                     <p class="text-right">Created <?= format_time_ago(strtotime($_user["joinned_time"])) ?></p>
                                     <p>User ID: <?= $_user["id"] ?></p>
                                 </div>
-
+                                
                                 <hr>
 
                                     <div class="flex justify-between items-center">
+                                        
                                         <div>
                                             <button class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900" 
                                             onclick="delete_user(<?= $_user["id"] ?>)" >
@@ -78,14 +79,14 @@ require("layout/head.php");
                                         </div>
                                         
                                         <button
-                                            data-modal-target="edit-user-profile" data-modal-toggle="edit-user-profile"
+                                            data-modal-target="edit-user-profile<?=$_user["id"] ?>" data-modal-toggle="edit-user-profile<?=$_user["id"] ?>"
                                             type="button" 
                                             class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">Edit Profile
                                             </button>
 
-                                        <?php require_once("layout/modals/edit_profile_modal.php") ?>
+                                        
                                     </div>
-
+                                    <?php require("layout/modals/edit_profile_modal.php") ?>
                                 
 
                     </div>

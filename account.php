@@ -19,11 +19,12 @@ require("layout/head.php");
                         </div>
                         <div class="ibox-content">
 							<form id="change_picture" method="GET" action="chat.php" class="form-horizontal">
-								<div class="form-group"><label class="col-sm-1 control-label">Image URL</label>
+								<div class="form-group">
+									<label class="col-sm-1 control-label">Image URL</label>
 									<div class="col-sm-10"><input type="text" name="profile_picture" value="<?= $profilePicture ?>" class="form-control" autocomplete="off"></div>
 								</div>
 								
-								<div class="form-group">
+								<div class="form-group">	
 									<div class="col-sm-4 col-sm-offset-1">
 										<small><p>You will be banned if using sensitive image/picture.</p></small>
 										<button id="cppbtn" class="btn btn-primary" name="submit" type="submit">Change</button>
