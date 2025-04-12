@@ -56,5 +56,116 @@ require("layout/head.php");
   </div>
 
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+
+    <script src="assets/js/jquery-3.1.1.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script src="assets/js/plugins/toastr/toastr.min.js"></script>
+<script src="assets/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="assets/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+<!-- Custom and plugin javascript -->
+<script src="assets/js/inspinia.js"></script>
+<script src="assets/js/plugins/pace/pace.min.js"></script>
+
+<script src="assets/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script>
+	$("#change_picture").on('submit',(function(e) {
+		e.preventDefault();
+		$.ajax({
+			url: "ajax/request/account/change_picture.php",
+			type: "POST",
+			data:  new FormData(this),
+			dataType:  'json',
+			contentType: false,
+			cache: false,
+			processData:false,
+			beforeSend: function () {
+				$('#cppbtn').text('Processing...').prop('disabled', true)
+			},
+			success: function(r) {
+				if(r.success){
+					toastr.success(r.message)
+				} else {
+					toastr.error(r.message)
+				}
+			},
+			error: function(){
+				
+				
+			},
+			complete: function(){
+				$('#cppbtn').text('Change').prop('disabled', false)
+			}
+	});
+	}));
+
+	$("#change_password").on('submit',(function(e) {
+		e.preventDefault();
+		$.ajax({
+			url: "ajax/request/account/change_password.php",
+			type: "POST",
+			data:  new FormData(this),
+			dataType:  'json',
+			contentType: false,
+			cache: false,
+			processData:false,
+			beforeSend: function () {
+				$('#cgpbtn').text('Processing...').prop('disabled', true)
+			},
+			success: function(r) {
+				if(r.success){
+					toastr.success(r.message)
+					setTimeout(function() {
+                        location.reload();
+                    }, 3000);
+			
+				} else {
+					toastr.error(r.message)
+				}
+			},
+			error: function(){
+				
+				
+			},
+			complete: function(){
+				$('#cgpbtn').text('Change').prop('disabled', false)
+			}
+	});
+	}));
+
+	$("#change_name").on('submit',(function(e) {
+		e.preventDefault();
+		$.ajax({
+			url: "ajax/request/account/change_name.php",
+			type: "POST",
+			data:  new FormData(this),
+			dataType:  'json',
+			contentType: false,
+			cache: false,
+			processData:false,
+			beforeSend: function () {
+				$('#cgnbtn').text('Processing...').prop('disabled', true)
+			},
+			success: function(r) {
+				if(r.success){
+					toastr.success(r.message)
+					
+					setTimeout(function() {
+                        location.reload();
+                    }, 3000);
+				} else {
+					toastr.error(r.message)
+				}
+			},
+			error: function(){
+				
+				
+			},
+			complete: function(){
+				$('#cgnbtn').text('Change').prop('disabled', false)
+			}
+	});
+	}));
+</script>
 </body>
 </html>
